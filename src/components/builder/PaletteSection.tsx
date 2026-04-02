@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "../../utils/cn";
 
@@ -7,7 +6,8 @@ interface PaletteSectionProps {
   icon: React.ReactNode;
   count: number;
   children: React.ReactNode;
-  defaultOpen?: boolean;
+  isOpen: boolean;
+  onToggle: () => void;
 }
 
 export function PaletteSection({
@@ -15,14 +15,13 @@ export function PaletteSection({
   icon,
   count,
   children,
-  defaultOpen = true,
+  isOpen,
+  onToggle,
 }: PaletteSectionProps) {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
-
   return (
     <div className="border-b border-gray-100 last:border-b-0">
       <button
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={onToggle}
         className="flex w-full items-center justify-between px-4 py-3 text-left transition-colors hover:bg-gray-50"
       >
         <div className="flex items-center gap-2">

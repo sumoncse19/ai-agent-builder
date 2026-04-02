@@ -1,9 +1,11 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { User, Zap, Layers, Cpu, Search } from "lucide-react";
 import type { AgentData } from "../../types/agent";
 import { AI_PROVIDERS } from "../../utils/constants";
 import { PaletteSection } from "./PaletteSection";
 import { DraggableItem } from "./DraggableItem";
+
+type SectionId = "profiles" | "skills" | "layers" | "providers";
 
 interface PalettePanelProps {
   data: AgentData;
@@ -29,7 +31,26 @@ export function PalettePanel({
   onAddProvider,
 }: PalettePanelProps) {
   const [searchQuery, setSearchQuery] = useState("");
+  const [openSection, setOpenSection] = useState<SectionId | null>("profiles");
+  const scrollRef = useRef<HTMLDivElement>(null);
   const query = searchQuery.toLowerCase();
+
+  const SECTION_ORDER: SectionId[] = [
+    "profiles",
+    "skills",
+    "layers",
+    "providers",
+  ];
+  const HEADER_HEIGHT = 44;
+
+  const toggleSection = (id: SectionId) => {
+    setOpenSection((prev) => (prev === id ? null : id));
+    const index = SECTION_ORDER.indexOf(id);
+    scrollRef.current?.scrollTo({
+      top: index * HEADER_HEIGHT,
+      behavior: "smooth",
+    });
+  };
 
   const filteredProfiles = useMemo(
     () =>
@@ -92,11 +113,16 @@ export function PalettePanel({
         </div>
       </div>
 
-      <div className="max-h-[50vh] flex-1 overflow-y-auto lg:max-h-none">
+      <div
+        ref={scrollRef}
+        className="max-h-[50vh] flex-1 overflow-y-auto lg:max-h-none"
+      >
         <PaletteSection
           title="Profiles"
           icon={<User size={16} />}
           count={filteredProfiles.length}
+          isOpen={openSection === "profiles"}
+          onToggle={() => toggleSection("profiles")}
         >
           {filteredProfiles.map((profile) => (
             <DraggableItem
@@ -115,7 +141,8 @@ export function PalettePanel({
           title="Skills"
           icon={<Zap size={16} />}
           count={filteredSkills.length}
-          defaultOpen={false}
+          isOpen={openSection === "skills"}
+          onToggle={() => toggleSection("skills")}
         >
           {filteredSkills.map((skill) => (
             <DraggableItem
@@ -135,7 +162,8 @@ export function PalettePanel({
           title="Layers"
           icon={<Layers size={16} />}
           count={filteredLayers.length}
-          defaultOpen={false}
+          isOpen={openSection === "layers"}
+          onToggle={() => toggleSection("layers")}
         >
           {filteredLayers.map((layer) => (
             <DraggableItem
@@ -155,7 +183,8 @@ export function PalettePanel({
           title="Providers"
           icon={<Cpu size={16} />}
           count={filteredProviders.length}
-          defaultOpen={false}
+          isOpen={openSection === "providers"}
+          onToggle={() => toggleSection("providers")}
         >
           {filteredProviders.map((provider) => (
             <DraggableItem
