@@ -1,0 +1,25 @@
+import { Badge } from "../ui/Badge";
+import type { DragData } from "../../types/agent";
+
+interface DragOverlayContentProps {
+  data: DragData;
+}
+
+export function DragOverlayContent({ data }: DragOverlayContentProps) {
+  return (
+    <div className="flex items-start gap-2 rounded-lg border border-violet-200 bg-white p-3 shadow-xl rotate-2">
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium text-gray-900">{data.name}</span>
+          {data.category && <Badge label={data.category} variant="category" />}
+          {data.layerType && <Badge label={data.layerType} variant="type" />}
+        </div>
+        {data.description && (
+          <p className="mt-0.5 text-xs text-gray-500 line-clamp-1">
+            {data.description}
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
