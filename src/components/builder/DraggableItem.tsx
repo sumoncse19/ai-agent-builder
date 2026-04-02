@@ -11,6 +11,7 @@ interface DraggableItemProps {
   description?: string;
   badge?: { label: string; variant: "category" | "type" };
   isPlaced?: boolean;
+  onTap?: () => void;
 }
 
 export function DraggableItem({
@@ -20,6 +21,7 @@ export function DraggableItem({
   description,
   badge,
   isPlaced = false,
+  onTap,
 }: DraggableItemProps) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: `palette-${type}-${id}`,
@@ -32,10 +34,14 @@ export function DraggableItem({
       ref={setNodeRef}
       {...attributes}
       {...listeners}
-      aria-label={`Drag ${name} to the ${type} zone`}
+      onClick={() => {
+        if (!isPlaced && onTap) onTap();
+      }}
+      aria-label={isPlaced ? `${name} already added` : `Add ${name} to ${type} zone`}
       aria-disabled={isPlaced}
       className={cn(
-        "group relative flex cursor-grab items-start gap-2 rounded-lg border p-3 transition-all select-none",
+        "group relative flex items-start gap-2 rounded-lg border p-3 transition-all select-none",
+        !isPlaced && "cursor-pointer lg:cursor-grab",
         isDragging && "z-50 opacity-50 shadow-lg",
         isPlaced
           ? "border-gray-100 bg-gray-50 opacity-50"

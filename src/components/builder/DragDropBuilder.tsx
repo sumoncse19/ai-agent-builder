@@ -181,6 +181,10 @@ export function DragDropBuilder({
             selectedSkills={selectedSkills}
             selectedLayers={selectedLayers}
             selectedProvider={selectedProvider}
+            onAddProfile={onSetProfile}
+            onAddSkill={onAddSkill}
+            onAddLayer={onAddLayer}
+            onAddProvider={onSetProvider}
           />
         </div>
         <BuilderCanvas

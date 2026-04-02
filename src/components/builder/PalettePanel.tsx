@@ -11,6 +11,10 @@ interface PalettePanelProps {
   selectedSkills: string[];
   selectedLayers: string[];
   selectedProvider: string;
+  onAddProfile: (id: string) => void;
+  onAddSkill: (id: string) => void;
+  onAddLayer: (id: string) => void;
+  onAddProvider: (id: string) => void;
 }
 
 export function PalettePanel({
@@ -19,6 +23,10 @@ export function PalettePanel({
   selectedSkills,
   selectedLayers,
   selectedProvider,
+  onAddProfile,
+  onAddSkill,
+  onAddLayer,
+  onAddProvider,
 }: PalettePanelProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const query = searchQuery.toLowerCase();
@@ -63,9 +71,12 @@ export function PalettePanel({
   return (
     <div className="flex h-full flex-col rounded-xl border border-gray-200 bg-white shadow-sm">
       <div className="border-b border-gray-100 p-4">
-        <h2 className="mb-3 text-base font-bold text-gray-900">
+        <h2 className="mb-1 text-base font-bold text-gray-900">
           Component Palette
         </h2>
+        <p className="mb-3 text-xs text-gray-400 lg:hidden">
+          Tap to add, or drag on desktop
+        </p>
         <div className="relative">
           <Search
             size={14}
@@ -81,7 +92,7 @@ export function PalettePanel({
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="max-h-[50vh] flex-1 overflow-y-auto lg:max-h-none">
         <PaletteSection
           title="Profiles"
           icon={<User size={16} />}
@@ -95,6 +106,7 @@ export function PalettePanel({
               name={profile.name}
               description={profile.description}
               isPlaced={selectedProfile === profile.id}
+              onTap={() => onAddProfile(profile.id)}
             />
           ))}
         </PaletteSection>
@@ -103,6 +115,7 @@ export function PalettePanel({
           title="Skills"
           icon={<Zap size={16} />}
           count={filteredSkills.length}
+          defaultOpen={false}
         >
           {filteredSkills.map((skill) => (
             <DraggableItem
@@ -113,6 +126,7 @@ export function PalettePanel({
               description={skill.description}
               badge={{ label: skill.category, variant: "category" }}
               isPlaced={selectedSkills.includes(skill.id)}
+              onTap={() => onAddSkill(skill.id)}
             />
           ))}
         </PaletteSection>
@@ -121,6 +135,7 @@ export function PalettePanel({
           title="Layers"
           icon={<Layers size={16} />}
           count={filteredLayers.length}
+          defaultOpen={false}
         >
           {filteredLayers.map((layer) => (
             <DraggableItem
@@ -131,6 +146,7 @@ export function PalettePanel({
               description={layer.description}
               badge={{ label: layer.type, variant: "type" }}
               isPlaced={selectedLayers.includes(layer.id)}
+              onTap={() => onAddLayer(layer.id)}
             />
           ))}
         </PaletteSection>
@@ -139,6 +155,7 @@ export function PalettePanel({
           title="Providers"
           icon={<Cpu size={16} />}
           count={filteredProviders.length}
+          defaultOpen={false}
         >
           {filteredProviders.map((provider) => (
             <DraggableItem
@@ -147,6 +164,7 @@ export function PalettePanel({
               type="provider"
               name={provider}
               isPlaced={selectedProvider === provider}
+              onTap={() => onAddProvider(provider)}
             />
           ))}
         </PaletteSection>

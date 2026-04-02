@@ -69,6 +69,10 @@ setSelectedLayers(prev => [...prev, layerId])
 **Problem:** Users could save empty agents (no selections), save without a name (only caught by toast), and the Update button was enabled even with no changes.
 **Fix:** Save button is disabled until agent has a name AND at least one selection. Update button is disabled until the loaded agent has actual changes (dirty-checking against original snapshot). Enter key also respects the disabled state.
 
+### UX: Mobile Tap-to-Add
+**Problem:** On mobile (< 1024px), palette and canvas stack vertically. With ~39 items expanded, the palette was ~3000px tall, making drag-and-drop impossible.
+**Fix:** Added tap-to-add alongside drag-and-drop. Clicking/tapping a palette item directly adds it to the correct zone — works on all screen sizes as a convenience. On mobile: palette height capped at 50vh with scroll, Skills/Layers/Providers sections collapsed by default, hint text "Tap to add, or drag on desktop" shown. Uses dnd-kit's 5px activation distance to avoid click/drag conflicts.
+
 ## Architecture
 
 ### Before
