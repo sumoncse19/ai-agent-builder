@@ -1,8 +1,10 @@
 ## Summary
 
-Complete overhaul of the AI Agent Builder from a buggy, monolithic React component into a polished, performant drag-and-drop interface. Fixed **10 bugs** (8 intentional + 2 additional), replaced all dropdown selects with a drag-and-drop builder using @dnd-kit, applied modern styling with Tailwind CSS v4, and split the 410-line monolith into 20 focused components.
+Complete overhaul of the AI Agent Builder from a buggy, monolithic React component into a polished, performant drag-and-drop interface. Fixed **10 bugs** (8 intentional + 2 additional), replaced all dropdown selects with a drag-and-drop builder using @dnd-kit, applied modern styling with Tailwind CSS v4, and split the 410-line monolith into 20+ focused components.
 
-**DESIGN LINK** = <public_url_here>
+**DESIGN LINK** = _No Figma design was created for this submission._
+
+**CV:** [`public/frontend_engineer_md_sumon_resume.pdf`](public/frontend_engineer_md_sumon_resume.pdf)
 
 ## Bugs Found & Fixed
 
@@ -43,7 +45,7 @@ setSelectedLayers(prev => [...prev, layerId])
 
 ### Bug 8: Monolithic Component (~410 lines, single file)
 **Problem:** Everything was in a single `App` component with zero component extraction. **Every state change** (including the 1-second timer) triggered a re-render of the entire tree. No memoization was possible because there were no child component boundaries.
-**Fix:** Split into 20 focused components across a proper directory structure with custom hooks for data fetching, localStorage, and builder state management.
+**Fix:** Split into 20+ focused components across a proper directory structure with custom hooks for data fetching, persistence, and builder state management.
 
 ### Bug 9: Palette-to-Zone Drops Fail When Zone Has Items (Runtime Bug)
 **Problem:** Dragging a palette item onto a drop zone that already contained items would silently fail. The `over` target resolved to a `SortableItem` inside the zone (not the zone itself), and `SortableItem` doesn't carry the zone's `type` in its data — so `overData?.type` was `undefined` and the drop was discarded.
@@ -103,8 +105,8 @@ src/
     ui/            # Badge, EmptyState, ConfirmDialog
   hooks/
     useAgentData.ts    # Data fetching with O(1) lookup Maps
-    useIndexedDB.ts    # Generic typed IndexedDB persistence hook
     useAgentBuilder.ts # Central builder state management
+    useIndexedDB.ts    # Generic typed IndexedDB persistence hook
   types/
     agent.ts       # All TypeScript interfaces
   utils/
@@ -147,7 +149,7 @@ src/
 - Valid drop zones highlight with violet border when a matching item is being dragged
 - Already-placed items are dimmed with a checkmark in the palette and cannot be dragged again
 - Items in multi-zones can be reordered by dragging and removed with the X button
-- Saved agents section below the canvas with load/delete functionality and localStorage persistence
+- Saved agents section below the canvas with load/delete functionality and IndexedDB persistence
 
 ## AI Tools Used
 
@@ -162,11 +164,12 @@ src/
 - [ ] Remove items from zones — they reappear available in palette
 - [ ] Search/filter in palette narrows items across all sections
 - [ ] Save an agent — toast appears, agent shows in saved list
-- [ ] Reload page — saved agents persist from localStorage
+- [ ] Reload page — saved agents persist from IndexedDB
 - [ ] Load a saved agent — builder populates correctly with all selections
-- [ ] Delete a saved agent — removed from list and localStorage
+- [ ] Delete a saved agent — removed from list and IndexedDB
 - [ ] Clear all saved agents — empties the list
 - [ ] Reset builder — clears all selections
 - [ ] Resize browser — responsive layout transitions (desktop 2-col, mobile 1-col)
+- [ ] CV PDF exists at `public/frontend_engineer_md_sumon_resume.pdf`
 - [ ] `bun run build` — production build succeeds with 0 TS errors
 - [ ] `bun run lint` — 0 ESLint errors
