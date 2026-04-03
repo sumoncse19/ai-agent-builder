@@ -13,14 +13,14 @@ export const CATEGORY_COLORS: Record<
   { bg: string; text: string; border: string }
 > = {
   information: {
-    bg: "bg-info/10",
+    bg: "bg-info/15",
     text: "text-info",
-    border: "border-info/30",
+    border: "border-info/25",
   },
   action: {
-    bg: "bg-action/10",
+    bg: "bg-action/15",
     text: "text-action",
-    border: "border-action/30",
+    border: "border-action/25",
   },
 };
 
@@ -29,24 +29,24 @@ export const TYPE_COLORS: Record<
   { bg: string; text: string; border: string }
 > = {
   reasoning: {
-    bg: "bg-reasoning/10",
+    bg: "bg-reasoning/15",
     text: "text-reasoning",
-    border: "border-reasoning/30",
+    border: "border-reasoning/25",
   },
   personality: {
-    bg: "bg-personality/10",
+    bg: "bg-personality/15",
     text: "text-personality",
-    border: "border-personality/30",
+    border: "border-personality/25",
   },
   context: {
-    bg: "bg-context/10",
+    bg: "bg-context/15",
     text: "text-context",
-    border: "border-context/30",
+    border: "border-context/25",
   },
   formatting: {
-    bg: "bg-formatting/10",
+    bg: "bg-formatting/15",
     text: "text-formatting",
-    border: "border-formatting/30",
+    border: "border-formatting/25",
   },
 };
 

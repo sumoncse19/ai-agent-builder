@@ -1,10 +1,220 @@
 @import "tailwindcss";
 
+/* ─── Obsidian Forge Theme ─── */
+
 @theme {
-  --color-info: #3b82f6;
-  --color-action: #22c55e;
-  --color-reasoning: #a855f7;
-  --color-personality: #f97316;
-  --color-context: #14b8a6;
-  --color-formatting: #64748b;
+  /* Surface palette – deep obsidian with warm undertones */
+  --color-forge-950: #08090d;
+  --color-forge-900: #0f1117;
+  --color-forge-850: #14161e;
+  --color-forge-800: #1a1d27;
+  --color-forge-700: #252836;
+  --color-forge-600: #313549;
+  --color-forge-500: #4a4f6a;
+  --color-forge-400: #6b7194;
+  --color-forge-300: #9498b5;
+  --color-forge-200: #c0c3d4;
+  --color-forge-100: #e4e5ed;
+  --color-forge-50: #f4f4f8;
+
+  /* Accent – warm amber/gold (the forge fire) */
+  --color-ember-500: #f59e0b;
+  --color-ember-400: #fbbf24;
+  --color-ember-300: #fcd34d;
+  --color-ember-200: #fde68a;
+  --color-ember-600: #d97706;
+
+  /* Semantic colors */
+  --color-info: #60a5fa;
+  --color-action: #34d399;
+  --color-reasoning: #c084fc;
+  --color-personality: #fb923c;
+  --color-context: #2dd4bf;
+  --color-formatting: #94a3b8;
+
+  /* Font families */
+  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* ─── Base ─── */
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-forge-950);
+  color: var(--color-forge-100);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Scrollbar ─── */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-forge-600);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-forge-500);
+}
+
+/* ─── Custom Utilities ─── */
+
+/* Noise texture overlay for depth */
+.noise-bg::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* Dot grid pattern for canvas */
+.dot-grid {
+  background-image: radial-gradient(
+    circle,
+    var(--color-forge-600) 1px,
+    transparent 1px
+  );
+  background-size: 24px 24px;
+}
+
+/* Glass morphism card */
+.glass-card {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-forge-800) 80%, transparent),
+    color-mix(in srgb, var(--color-forge-850) 90%, transparent)
+  );
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-forge-700);
+}
+
+/* Glow ring effect */
+.glow-ember {
+  box-shadow:
+    0 0 0 1px var(--color-ember-500),
+    0 0 20px -4px color-mix(in srgb, var(--color-ember-500) 30%, transparent);
+}
+
+.glow-subtle {
+  box-shadow: 0 0 20px -4px color-mix(in srgb, var(--color-ember-500) 15%, transparent);
+}
+
+/* ─── Animations ─── */
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--color-ember-500) 40%, transparent),
+      0 0 12px -2px color-mix(in srgb, var(--color-ember-500) 20%, transparent);
+  }
+  50% {
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--color-ember-500) 60%, transparent),
+      0 0 24px -2px color-mix(in srgb, var(--color-ember-500) 35%, transparent);
+  }
+}
+
+@keyframes border-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.4s ease-out both;
+}
+
+.animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-border-flow {
+  background-size: 300% 300%;
+  animation: border-flow 4s ease infinite;
+}
+
+/* Stagger children */
+.stagger-children > * {
+  animation: fade-up 0.3s ease-out both;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 50ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 100ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 150ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 200ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 250ms; }
+.stagger-children > *:nth-child(7) { animation-delay: 300ms; }
+.stagger-children > *:nth-child(8) { animation-delay: 350ms; }
+.stagger-children > *:nth-child(9) { animation-delay: 400ms; }
+.stagger-children > *:nth-child(10) { animation-delay: 450ms; }
+.stagger-children > *:nth-child(11) { animation-delay: 500ms; }
+.stagger-children > *:nth-child(12) { animation-delay: 550ms; }
+
+/* Selection */
+::selection {
+  background: color-mix(in srgb, var(--color-ember-500) 30%, transparent);
+  color: var(--color-forge-50);
+}
+
+/* Focus ring override */
+*:focus-visible {
+  outline: 2px solid var(--color-ember-500);
+  outline-offset: 2px;
+}
+
+/* Dialog backdrop */
+dialog::backdrop {
+  background: color-mix(in srgb, var(--color-forge-950) 80%, transparent);
+  backdrop-filter: blur(8px);
 }

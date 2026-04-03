@@ -45,7 +45,6 @@ export function DropZone(props: DropZoneProps) {
   const isValidTarget = activeDragType === type;
   const isHighlighted = isOver && isValidTarget;
 
-  // Fix #1: scroll the matching drop zone into view when user starts dragging a matching type
   useEffect(() => {
     if (isValidTarget && zoneRef.current) {
       zoneRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
@@ -63,28 +62,31 @@ export function DropZone(props: DropZoneProps) {
       className={cn(
         "rounded-xl border-2 p-4 transition-all duration-200",
         isHighlighted
-          ? "border-violet-400 bg-violet-50 shadow-md ring-2 ring-violet-300"
+          ? "glow-ember border-ember-500 bg-ember-500/5"
           : isValidTarget && activeDragType
-            ? "border-violet-300 bg-violet-50/30 border-dashed shadow-sm animate-pulse"
-            : "border-gray-200 bg-gray-50/50",
+            ? "animate-pulse-glow border-dashed border-ember-500/40 bg-ember-500/5"
+            : "border-forge-700/40 bg-forge-850/60",
       )}
     >
       <div className="mb-3 flex items-center gap-2">
         <span
-          className={cn("text-gray-500", isValidTarget && "text-violet-600")}
+          className={cn(
+            "text-forge-500",
+            isValidTarget && "text-ember-500",
+          )}
         >
           {icon}
         </span>
         <h3
           className={cn(
-            "text-sm font-semibold text-gray-700",
-            isValidTarget && "text-violet-700",
+            "text-xs font-semibold uppercase tracking-wider text-forge-400",
+            isValidTarget && "text-ember-400",
           )}
         >
           {label}
         </h3>
         {isValidTarget && !isHighlighted && (
-          <span className="text-xs font-medium text-violet-500 animate-pulse">
+          <span className="font-mono text-[10px] font-medium text-ember-500 animate-pulse">
             Drop here
           </span>
         )}
@@ -116,25 +118,25 @@ function SingleContent({
     return (
       <EmptyState
         message={`Drag a ${type} here`}
-        className="min-h-15 border-gray-100"
+        className="min-h-12 border-forge-700/30"
       />
     );
   }
 
   return (
-    <div className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-3 shadow-sm">
-      <span className="text-sm font-medium text-gray-900">{item.name}</span>
+    <div className="flex items-center justify-between rounded-lg border border-forge-600/50 bg-forge-800 px-4 py-2.5">
+      <span className="text-sm font-medium text-forge-100">{item.name}</span>
       <button
         onClick={onRemove}
-        className="rounded p-1 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500"
+        className="rounded p-1 text-forge-500 transition-colors hover:bg-red-500/10 hover:text-red-400"
       >
         <svg
-          width="14"
-          height="14"
+          width="12"
+          height="12"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
         >
@@ -161,7 +163,7 @@ function MultiContent({
     return (
       <EmptyState
         message="Drag items here"
-        className="min-h-15 border-gray-100"
+        className="min-h-12 border-forge-700/30"
       />
     );
   }
@@ -171,7 +173,7 @@ function MultiContent({
       items={items.map((i) => i.id)}
       strategy={verticalListSortingStrategy}
     >
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-1.5">
         {items.map((item) => (
           <SortableItem
             key={item.id}

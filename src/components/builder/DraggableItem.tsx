@@ -37,33 +37,35 @@ export function DraggableItem({
       onClick={() => {
         if (!isPlaced && onTap) onTap();
       }}
-      aria-label={isPlaced ? `${name} already added` : `Add ${name} to ${type} zone`}
+      aria-label={
+        isPlaced ? `${name} already added` : `Add ${name} to ${type} zone`
+      }
       aria-disabled={isPlaced}
       className={cn(
-        "group relative flex items-start gap-2 rounded-lg border p-3 transition-all select-none",
+        "group relative flex items-start gap-2 rounded-lg border p-2.5 transition-all select-none",
         !isPlaced && "cursor-pointer lg:cursor-grab",
-        isDragging && "z-50 opacity-50 shadow-lg",
+        isDragging && "z-50 opacity-40",
         isPlaced
-          ? "border-gray-100 bg-gray-50 opacity-50"
-          : "border-gray-200 bg-white shadow-sm hover:border-violet-200 hover:shadow-md",
+          ? "border-forge-700/30 bg-forge-800/30 opacity-40"
+          : "border-forge-700/50 bg-forge-800/60 hover:border-ember-500/40 hover:bg-forge-700/50",
       )}
     >
-      <div className="mt-0.5 text-gray-300 group-hover:text-gray-400">
+      <div className="mt-0.5 shrink-0 text-forge-600 group-hover:text-forge-400">
         {isPlaced ? (
-          <Check size={14} className="text-green-500" />
+          <Check size={12} className="text-action" />
         ) : (
-          <GripVertical size={14} />
+          <GripVertical size={12} />
         )}
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-gray-900 truncate">
+          <span className="text-xs font-medium text-forge-100 truncate">
             {name}
           </span>
           {badge && <Badge label={badge.label} variant={badge.variant} />}
         </div>
         {description && (
-          <p className="mt-0.5 text-xs text-gray-500 line-clamp-2">
+          <p className="mt-0.5 text-[11px] leading-relaxed text-forge-400 line-clamp-2">
             {description}
           </p>
         )}

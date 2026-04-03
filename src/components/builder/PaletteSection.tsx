@@ -19,23 +19,30 @@ export function PaletteSection({
   onToggle,
 }: PaletteSectionProps) {
   return (
-    <div className="border-b border-gray-100 last:border-b-0">
+    <div className="border-b border-forge-700/30 last:border-b-0">
       <button
         onClick={onToggle}
-        className="flex w-full items-center justify-between px-4 py-3 text-left transition-colors hover:bg-gray-50"
+        className={cn(
+          "flex w-full items-center justify-between px-4 py-2.5 text-left transition-colors hover:bg-forge-800/50",
+          isOpen && "bg-forge-800/30",
+        )}
       >
         <div className="flex items-center gap-2">
-          <span className="text-gray-500">{icon}</span>
-          <span className="text-sm font-semibold text-gray-700">{title}</span>
-          <span className="inline-flex items-center rounded-full bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-500">
+          <span className={cn("text-forge-500", isOpen && "text-ember-500")}>
+            {icon}
+          </span>
+          <span className="text-xs font-semibold uppercase tracking-wider text-forge-300">
+            {title}
+          </span>
+          <span className="inline-flex items-center rounded-md bg-forge-700/60 px-1.5 py-0.5 font-mono text-[10px] font-medium text-forge-400">
             {count}
           </span>
         </div>
         <ChevronDown
-          size={16}
+          size={14}
           className={cn(
-            "text-gray-400 transition-transform duration-200",
-            isOpen && "rotate-180",
+            "text-forge-500 transition-transform duration-200",
+            isOpen && "rotate-180 text-ember-500",
           )}
         />
       </button>
@@ -48,7 +55,9 @@ export function PaletteSection({
         )}
       >
         <div className="overflow-hidden">
-          <div className="flex flex-col gap-2 px-4 pb-3">{children}</div>
+          <div className="stagger-children flex flex-col gap-1.5 px-3 pb-3">
+            {children}
+          </div>
         </div>
       </div>
     </div>

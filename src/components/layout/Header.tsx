@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { RefreshCw, Clock, Bot } from "lucide-react";
+import { RefreshCw, Clock, Flame } from "lucide-react";
 import { cn } from "../../utils/cn";
 
-// Bug 4 fix: isolated component so the 1s timer only re-renders this, not the entire app
 function SessionTimer() {
   const [sessionTime, setSessionTime] = useState(0);
 
@@ -17,8 +16,8 @@ function SessionTimer() {
   const seconds = sessionTime % 60;
 
   return (
-    <div className="flex items-center gap-1.5 text-sm text-gray-500">
-      <Clock size={14} />
+    <div className="flex items-center gap-1.5 font-mono text-xs text-forge-400">
+      <Clock size={12} />
       <span>
         {minutes}:{seconds.toString().padStart(2, "0")}
       </span>
@@ -33,33 +32,37 @@ interface HeaderProps {
 
 export function Header({ loading, onRefetch }: HeaderProps) {
   return (
-    <header className="border-b border-gray-200 bg-white px-6 py-4">
-      <div className="mx-auto flex max-w-7xl items-center justify-between">
+    <header className="relative border-b border-forge-700/50 bg-forge-900/80 backdrop-blur-xl">
+      {/* Animated gradient accent line */}
+      <div className="absolute inset-x-0 bottom-0 h-px animate-border-flow bg-gradient-to-r from-transparent via-ember-500/60 to-transparent" />
+
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6 md:py-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-violet-500 to-indigo-600 text-white shadow-md">
-            <Bot size={22} />
+          <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-ember-500 to-ember-600 text-forge-950 shadow-lg shadow-ember-500/20">
+            <Flame size={20} strokeWidth={2.5} />
+            <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-ember-400/20 to-transparent" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-gray-900">
-              AI Agent Builder
+            <h1 className="text-lg font-bold tracking-tight text-forge-50 md:text-xl">
+              Agent Forge
             </h1>
-            <p className="text-sm text-gray-500">
-              Design your custom AI personality and capability set
+            <p className="hidden text-xs font-medium text-forge-400 sm:block">
+              Craft your custom AI agent
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <SessionTimer />
           <button
             onClick={onRefetch}
             disabled={loading}
             className={cn(
-              "flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm transition-all hover:bg-gray-50 hover:shadow",
-              loading && "cursor-not-allowed opacity-50",
+              "flex items-center gap-2 rounded-lg border border-forge-600 bg-forge-800 px-3 py-1.5 font-mono text-xs font-medium text-forge-200 transition-all hover:border-forge-500 hover:bg-forge-700 hover:text-forge-100",
+              loading && "cursor-not-allowed opacity-40",
             )}
           >
-            <RefreshCw size={14} className={cn(loading && "animate-spin")} />
-            {loading ? "Loading..." : "Reload Data"}
+            <RefreshCw size={12} className={cn(loading && "animate-spin")} />
+            {loading ? "Syncing..." : "Reload"}
           </button>
         </div>
       </div>

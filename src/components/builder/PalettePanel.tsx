@@ -96,25 +96,25 @@ export function PalettePanel({
     (selectedProvider ? 48 : 0);
 
   return (
-    <div className="flex h-full flex-col rounded-xl border border-gray-200 bg-white shadow-sm">
-      <div className="border-b border-gray-100 p-4">
-        <h2 className="mb-1 text-base font-bold text-gray-900">
-          Component Palette
+    <div className="glass-card flex h-full flex-col rounded-xl">
+      <div className="border-b border-forge-700/50 p-4">
+        <h2 className="mb-0.5 text-sm font-bold uppercase tracking-widest text-forge-200">
+          Components
         </h2>
-        <p className="mb-3 text-xs text-gray-400 lg:hidden">
+        <p className="mb-3 text-[11px] text-forge-500 lg:hidden">
           Tap to add, or drag on desktop
         </p>
         <div className="relative">
           <Search
             size={14}
-            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-forge-500"
           />
           <input
             type="text"
             placeholder="Search components..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-lg border border-gray-200 bg-gray-50 py-2 pl-9 pr-3 text-sm placeholder-gray-400 transition-colors focus:border-violet-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-violet-100"
+            className="w-full rounded-lg border border-forge-600 bg-forge-850 py-2 pl-9 pr-3 font-mono text-xs text-forge-100 placeholder-forge-500 transition-all focus:border-ember-500/50 focus:bg-forge-800 focus:outline-none focus:ring-1 focus:ring-ember-500/30"
           />
         </div>
       </div>
@@ -130,7 +130,7 @@ export function PalettePanel({
       >
         <PaletteSection
           title="Profiles"
-          icon={<User size={16} />}
+          icon={<User size={14} />}
           count={filteredProfiles.length}
           isOpen={openSection === "profiles"}
           onToggle={() => toggleSection("profiles")}
@@ -150,7 +150,7 @@ export function PalettePanel({
 
         <PaletteSection
           title="Skills"
-          icon={<Zap size={16} />}
+          icon={<Zap size={14} />}
           count={filteredSkills.length}
           isOpen={openSection === "skills"}
           onToggle={() => toggleSection("skills")}
@@ -171,7 +171,7 @@ export function PalettePanel({
 
         <PaletteSection
           title="Layers"
-          icon={<Layers size={16} />}
+          icon={<Layers size={14} />}
           count={filteredLayers.length}
           isOpen={openSection === "layers"}
           onToggle={() => toggleSection("layers")}
@@ -192,7 +192,7 @@ export function PalettePanel({
 
         <PaletteSection
           title="Providers"
-          icon={<Cpu size={16} />}
+          icon={<Cpu size={14} />}
           count={filteredProviders.length}
           isOpen={openSection === "providers"}
           onToggle={() => toggleSection("providers")}

@@ -21,39 +21,45 @@ export function SavedAgentCard({
 
   return (
     <>
-      <div className="group relative rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:border-violet-200 hover:shadow-md">
-        <h3 className="mb-3 text-base font-bold text-gray-900">{agent.name}</h3>
-        <div className="space-y-2 text-sm text-gray-600">
-          <div className="flex items-center gap-2">
-            <User size={14} className="text-violet-500" />
-            <span>{profileName || "No profile"}</span>
+      <div className="group glass-card relative rounded-xl p-4 transition-all hover:border-ember-500/30 hover:glow-subtle">
+        <h3 className="mb-3 text-base font-bold text-forge-50">
+          {agent.name}
+        </h3>
+        <div className="space-y-1.5 text-sm">
+          <div className="flex items-center gap-2 text-forge-300">
+            <User size={12} className="text-reasoning" />
+            <span className="text-xs">{profileName || "No profile"}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Zap size={14} className="text-amber-500" />
-            <span>{agent.skillIds?.length || 0} skills</span>
+          <div className="flex items-center gap-2 text-forge-300">
+            <Zap size={12} className="text-ember-500" />
+            <span className="text-xs">
+              {agent.skillIds?.length || 0} skills
+            </span>
           </div>
-          <div className="flex items-center gap-2">
-            <Layers size={14} className="text-purple-500" />
-            <span>{agent.layerIds?.length || 0} layers</span>
+          <div className="flex items-center gap-2 text-forge-300">
+            <Layers size={12} className="text-personality" />
+            <span className="text-xs">
+              {agent.layerIds?.length || 0} layers
+            </span>
           </div>
-          <div className="flex items-center gap-2">
-            <Cpu size={14} className="text-emerald-500" />
-            <span>{agent.provider || "No provider"}</span>
+          <div className="flex items-center gap-2 text-forge-300">
+            <Cpu size={12} className="text-action" />
+            <span className="text-xs">{agent.provider || "No provider"}</span>
           </div>
         </div>
         <div className="mt-4 flex gap-2">
           <button
             onClick={onLoad}
-            className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-violet-50 px-3 py-2 text-sm font-medium text-violet-700 transition-colors hover:bg-violet-100"
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-ember-500/10 px-3 py-2 text-xs font-semibold text-ember-400 transition-colors hover:bg-ember-500/20"
           >
-            <Upload size={14} />
+            <Upload size={12} />
             Load
           </button>
           <button
             onClick={() => setShowDeleteDialog(true)}
-            className="flex items-center justify-center rounded-lg bg-red-50 px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-100"
+            className="flex items-center justify-center rounded-lg bg-red-500/10 px-3 py-2 text-xs font-medium text-red-400 transition-colors hover:bg-red-500/20"
           >
-            <Trash2 size={14} />
+            <Trash2 size={12} />
           </button>
         </div>
       </div>

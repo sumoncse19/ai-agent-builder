@@ -52,7 +52,6 @@ export function BuilderCanvas({
   onSave,
   onReset,
 }: BuilderCanvasProps) {
-  // js-index-maps: O(1) Map.get() instead of O(n) .find()
   const profile = selectedProfile ? profileMap.get(selectedProfile) : undefined;
   const profileItem = profile ? { id: profile.id, name: profile.name } : null;
 
@@ -81,52 +80,56 @@ export function BuilderCanvas({
     : null;
 
   return (
-    <div className="flex flex-col gap-4">
-      <h2 className="text-base font-bold text-gray-900">Agent Canvas</h2>
+    <div className="dot-grid flex flex-col gap-4 rounded-xl border border-forge-700/30 bg-forge-900/50 p-4 md:p-5">
+      <h2 className="text-xs font-bold uppercase tracking-widest text-forge-300">
+        Agent Canvas
+      </h2>
 
-      <DropZone
-        id="drop-profile"
-        type="profile"
-        label="Base Profile"
-        icon={<User size={16} />}
-        mode="single"
-        item={profileItem}
-        onRemove={onRemoveProfile}
-        activeDragType={activeDragType}
-      />
+      <div className="stagger-children flex flex-col gap-3">
+        <DropZone
+          id="drop-profile"
+          type="profile"
+          label="Base Profile"
+          icon={<User size={14} />}
+          mode="single"
+          item={profileItem}
+          onRemove={onRemoveProfile}
+          activeDragType={activeDragType}
+        />
 
-      <DropZone
-        id="drop-skills"
-        type="skill"
-        label="Skills"
-        icon={<Zap size={16} />}
-        mode="multi"
-        items={skillItems}
-        onRemove={onRemoveSkill}
-        activeDragType={activeDragType}
-      />
+        <DropZone
+          id="drop-skills"
+          type="skill"
+          label="Skills"
+          icon={<Zap size={14} />}
+          mode="multi"
+          items={skillItems}
+          onRemove={onRemoveSkill}
+          activeDragType={activeDragType}
+        />
 
-      <DropZone
-        id="drop-layers"
-        type="layer"
-        label="Personality Layers"
-        icon={<Layers size={16} />}
-        mode="multi"
-        items={layerItems}
-        onRemove={onRemoveLayer}
-        activeDragType={activeDragType}
-      />
+        <DropZone
+          id="drop-layers"
+          type="layer"
+          label="Personality Layers"
+          icon={<Layers size={14} />}
+          mode="multi"
+          items={layerItems}
+          onRemove={onRemoveLayer}
+          activeDragType={activeDragType}
+        />
 
-      <DropZone
-        id="drop-provider"
-        type="provider"
-        label="AI Provider"
-        icon={<Cpu size={16} />}
-        mode="single"
-        item={providerItem}
-        onRemove={onRemoveProvider}
-        activeDragType={activeDragType}
-      />
+        <DropZone
+          id="drop-provider"
+          type="provider"
+          label="AI Provider"
+          icon={<Cpu size={14} />}
+          mode="single"
+          item={providerItem}
+          onRemove={onRemoveProvider}
+          activeDragType={activeDragType}
+        />
+      </div>
 
       <AgentPreview
         profileMap={profileMap}

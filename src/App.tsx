@@ -13,7 +13,18 @@ function App() {
 
   return (
     <>
-      <Toaster position="top-right" richColors />
+      <Toaster
+        position="top-right"
+        richColors
+        theme="dark"
+        toastOptions={{
+          style: {
+            background: "var(--color-forge-800)",
+            border: "1px solid var(--color-forge-600)",
+            color: "var(--color-forge-100)",
+          },
+        }}
+      />
       <Layout
         header={<Header loading={loading} onRefetch={refetch} />}
         footer={
@@ -27,7 +38,7 @@ function App() {
         }
       >
         {error && (
-          <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+          <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-300">
             Error: {error}
           </div>
         )}
@@ -35,8 +46,8 @@ function App() {
         {loading && (
           <div className="flex items-center justify-center py-20">
             <div className="flex flex-col items-center gap-3">
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-violet-200 border-t-violet-600" />
-              <p className="text-sm text-gray-500">
+              <div className="h-8 w-8 animate-spin rounded-full border-4 border-forge-700 border-t-ember-500" />
+              <p className="font-mono text-xs text-forge-400">
                 Loading configuration data...
               </p>
             </div>
@@ -44,8 +55,10 @@ function App() {
         )}
 
         {!data && !loading && !error && (
-          <div className="flex items-center justify-center py-20 text-gray-400">
-            <p>No data loaded. Click "Reload Data" to try again.</p>
+          <div className="flex items-center justify-center py-20 text-forge-500">
+            <p className="text-sm">
+              No data loaded. Click "Reload" to try again.
+            </p>
           </div>
         )}
 

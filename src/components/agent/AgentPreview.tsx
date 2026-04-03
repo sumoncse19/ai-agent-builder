@@ -16,7 +16,6 @@ export function AgentPreview({
   selectedLayers,
   selectedProvider,
 }: AgentPreviewProps) {
-  // Bug 7 fix + js-index-maps: O(1) Map.get() instead of O(n) .find()
   const profile = selectedProfile ? profileMap.get(selectedProfile) : undefined;
   const hasAnySelection =
     selectedProfile ||
@@ -27,17 +26,19 @@ export function AgentPreview({
   if (!hasAnySelection) return null;
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-4">
-      <h3 className="mb-3 text-sm font-semibold text-gray-700 uppercase tracking-wider">
+    <div className="animate-fade-up glass-card rounded-xl p-4">
+      <h3 className="mb-3 font-mono text-[10px] font-semibold uppercase tracking-widest text-ember-500">
         Agent Summary
       </h3>
       <div className="grid grid-cols-2 gap-3">
         {profile && (
           <div className="flex items-start gap-2">
-            <User size={16} className="mt-0.5 shrink-0 text-violet-500" />
+            <User size={14} className="mt-0.5 shrink-0 text-reasoning" />
             <div>
-              <p className="text-xs font-medium text-gray-500">Profile</p>
-              <p className="text-sm font-semibold text-gray-900">
+              <p className="font-mono text-[10px] font-medium text-forge-500">
+                Profile
+              </p>
+              <p className="text-sm font-semibold text-forge-100">
                 {profile.name}
               </p>
             </div>
@@ -45,10 +46,12 @@ export function AgentPreview({
         )}
         {selectedSkills.length > 0 && (
           <div className="flex items-start gap-2">
-            <Zap size={16} className="mt-0.5 shrink-0 text-amber-500" />
+            <Zap size={14} className="mt-0.5 shrink-0 text-ember-500" />
             <div>
-              <p className="text-xs font-medium text-gray-500">Skills</p>
-              <p className="text-sm font-semibold text-gray-900">
+              <p className="font-mono text-[10px] font-medium text-forge-500">
+                Skills
+              </p>
+              <p className="text-sm font-semibold text-forge-100">
                 {selectedSkills.length} selected
               </p>
             </div>
@@ -56,10 +59,12 @@ export function AgentPreview({
         )}
         {selectedLayers.length > 0 && (
           <div className="flex items-start gap-2">
-            <Layers size={16} className="mt-0.5 shrink-0 text-purple-500" />
+            <Layers size={14} className="mt-0.5 shrink-0 text-personality" />
             <div>
-              <p className="text-xs font-medium text-gray-500">Layers</p>
-              <p className="text-sm font-semibold text-gray-900">
+              <p className="font-mono text-[10px] font-medium text-forge-500">
+                Layers
+              </p>
+              <p className="text-sm font-semibold text-forge-100">
                 {selectedLayers.length} selected
               </p>
             </div>
@@ -67,10 +72,12 @@ export function AgentPreview({
         )}
         {selectedProvider && (
           <div className="flex items-start gap-2">
-            <Cpu size={16} className="mt-0.5 shrink-0 text-emerald-500" />
+            <Cpu size={14} className="mt-0.5 shrink-0 text-action" />
             <div>
-              <p className="text-xs font-medium text-gray-500">Provider</p>
-              <p className="text-sm font-semibold text-gray-900">
+              <p className="font-mono text-[10px] font-medium text-forge-500">
+                Provider
+              </p>
+              <p className="text-sm font-semibold text-forge-100">
                 {selectedProvider}
               </p>
             </div>

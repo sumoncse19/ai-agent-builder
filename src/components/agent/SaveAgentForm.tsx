@@ -20,13 +20,11 @@ export function SaveAgentForm({
   onSave,
   onReset,
 }: SaveAgentFormProps) {
-  // For new agents: need name + at least one selection
-  // For updates: need name + at least one selection + something changed
   const isDisabled = isEditing ? !canSave || !hasChanges : !canSave;
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-4">
-      <h3 className="mb-3 text-sm font-semibold text-gray-700 uppercase tracking-wider">
+    <div className="glass-card rounded-xl p-4">
+      <h3 className="mb-3 font-mono text-[10px] font-semibold uppercase tracking-widest text-ember-500">
         {isEditing ? "Update Agent" : "Save Agent"}
       </h3>
       <div className="flex gap-2">
@@ -36,19 +34,20 @@ export function SaveAgentForm({
           value={agentName}
           onChange={(e) => onNameChange(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && !isDisabled && onSave()}
-          className="flex-1 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 transition-colors focus:border-violet-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-violet-100"
+          className="flex-1 rounded-lg border border-forge-600 bg-forge-850 px-3 py-2 text-sm text-forge-100 placeholder-forge-500 transition-all focus:border-ember-500/50 focus:bg-forge-800 focus:outline-none focus:ring-1 focus:ring-ember-500/30"
         />
         <button
           onClick={onSave}
           disabled={isDisabled}
           className={cn(
-            "flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium text-white shadow-sm transition-all",
+            "flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-semibold transition-all",
             isDisabled
-              ? "cursor-not-allowed opacity-40"
-              : "hover:shadow-md active:scale-[0.98]",
-            isEditing
-              ? "bg-amber-500 hover:bg-amber-600"
-              : "bg-linear-to-r from-violet-500 to-indigo-600",
+              ? "cursor-not-allowed bg-forge-700 text-forge-500 opacity-40"
+              : "active:scale-[0.97]",
+            !isDisabled &&
+              (isEditing
+                ? "bg-personality text-forge-950 hover:brightness-110"
+                : "bg-gradient-to-r from-ember-500 to-ember-600 text-forge-950 shadow-lg shadow-ember-500/20 hover:shadow-ember-500/30"),
           )}
         >
           {isEditing ? <Pencil size={14} /> : <Save size={14} />}
@@ -56,7 +55,7 @@ export function SaveAgentForm({
         </button>
         <button
           onClick={onReset}
-          className="flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-600 shadow-sm transition-all hover:bg-gray-50"
+          className="flex items-center gap-1.5 rounded-lg border border-forge-600 bg-forge-800 px-3 py-2 text-sm font-medium text-forge-300 transition-all hover:border-forge-500 hover:bg-forge-700 hover:text-forge-100"
           title="Reset builder"
         >
           <RotateCcw size={14} />
