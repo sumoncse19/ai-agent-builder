@@ -89,6 +89,12 @@ export function PalettePanel({
     [query],
   );
 
+  const canvasOffset =
+    (selectedProfile ? 70 : 0) +
+    selectedSkills.length * 40 +
+    selectedLayers.length * 40 +
+    (selectedProvider ? 48 : 0);
+
   return (
     <div className="flex h-full flex-col rounded-xl border border-gray-200 bg-white shadow-sm">
       <div className="border-b border-gray-100 p-4">
@@ -115,7 +121,12 @@ export function PalettePanel({
 
       <div
         ref={scrollRef}
-        className="max-h-[50vh] flex-1 overflow-y-auto lg:max-h-none"
+        className="max-h-[50vh] flex-1 overflow-y-auto lg:max-h-(--palette-max)"
+        style={
+          {
+            "--palette-max": `calc(100vh - ${320 - canvasOffset}px)`,
+          } as React.CSSProperties
+        }
       >
         <PaletteSection
           title="Profiles"
