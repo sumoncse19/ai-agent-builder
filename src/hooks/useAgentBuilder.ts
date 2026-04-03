@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect, useRef, useMemo } from "react";
 import { arrayMove } from "@dnd-kit/sortable";
 import { toast } from "sonner";
 import type { SavedAgent } from "../types/agent";
-import { useLocalStorage } from "./useLocalStorage";
+import { useIndexedDB } from "./useIndexedDB";
 
 export function useAgentBuilder() {
   const [selectedProfile, setSelectedProfile] = useState("");
@@ -13,7 +13,7 @@ export function useAgentBuilder() {
   const [editingAgentId, setEditingAgentId] = useState<string | null>(null);
   // Track original state when loading an agent, for dirty-checking
   const [originalAgent, setOriginalAgent] = useState<SavedAgent | null>(null);
-  const [savedAgents, setSavedAgents] = useLocalStorage<SavedAgent[]>(
+  const [savedAgents, setSavedAgents] = useIndexedDB<SavedAgent[]>(
     "savedAgents",
     [],
   );

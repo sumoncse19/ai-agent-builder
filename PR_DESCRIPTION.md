@@ -71,7 +71,15 @@ setSelectedLayers(prev => [...prev, layerId])
 
 ### UX: Mobile Tap-to-Add
 **Problem:** On mobile (< 1024px), palette and canvas stack vertically. With ~39 items expanded, the palette was ~3000px tall, making drag-and-drop impossible.
-**Fix:** Added tap-to-add alongside drag-and-drop. Clicking/tapping a palette item directly adds it to the correct zone — works on all screen sizes as a convenience. On mobile: palette height capped at 50vh with scroll, Skills/Layers/Providers sections collapsed by default, hint text "Tap to add, or drag on desktop" shown. Uses dnd-kit's 5px activation distance to avoid click/drag conflicts.
+**Fix:** Added tap-to-add alongside drag-and-drop. Clicking/tapping a palette item directly adds it to the correct zone — works on all screen sizes as a convenience. On mobile: palette height capped at 50vh with scroll, accordion sections (one open at a time, scrolls to top on toggle), hint text "Tap to add, or drag on desktop" shown. Uses dnd-kit's 5px activation distance to avoid click/drag conflicts.
+
+### Storage: IndexedDB Instead of localStorage
+**Problem:** localStorage has a ~5MB limit, is synchronous (blocks the main thread), and doesn't support structured data natively.
+**Fix:** Replaced `useLocalStorage` with a custom `useIndexedDB` hook backed by the IndexedDB API. Same hook signature `[T, setter]` — one-line swap in `useAgentBuilder`. Uses a `agent-builder` database with a `keyval` object store. Reads are async on mount (starts with initial value, updates when DB load completes). Writes are fire-and-forget. No external libraries added.
+
+### Dynamic Palette Height
+**Problem:** On desktop, the palette's scroll area didn't adapt to the number of items in the canvas — adding many items caused the canvas to overflow below the viewport.
+**Fix:** Palette max-height is dynamically computed via a CSS custom property: `calc(100vh - ${320 + canvasOffset}px)` where `canvasOffset` accounts for each item in the canvas (70px profile, 40px per skill/layer, 48px provider). The palette shrinks as the canvas grows, keeping both visible.
 
 ## Architecture
 
@@ -92,10 +100,10 @@ src/
     builder/       # DragDropBuilder, DraggableItem, DropZone, SortableItem,
                    # PalettePanel, PaletteSection, BuilderCanvas, DragOverlayContent
     agent/         # AgentPreview, SaveAgentForm, SavedAgentCard, SavedAgentsList
-    ui/            # Badge, EmptyState
+    ui/            # Badge, EmptyState, ConfirmDialog
   hooks/
     useAgentData.ts    # Data fetching with O(1) lookup Maps
-    useLocalStorage.ts # Generic typed localStorage hook
+    useIndexedDB.ts    # Generic typed IndexedDB persistence hook
     useAgentBuilder.ts # Central builder state management
   types/
     agent.ts       # All TypeScript interfaces
