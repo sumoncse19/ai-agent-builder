@@ -80,7 +80,7 @@ export function BuilderCanvas({
     : null;
 
   return (
-    <div className="dot-grid flex flex-col gap-4 rounded-xl border border-border-subtle bg-surface-base/50 p-4 md:p-5">
+    <div className="dot-grid flex flex-col gap-4 rounded-xl border border-border-strong bg-surface-base/50 p-4 md:p-5">
       <h2 className="text-xs font-bold uppercase tracking-widest text-text-secondary">
         Agent Canvas
       </h2>

@@ -75,7 +75,9 @@ export function Header({
             )}
           >
             <RefreshCw size={12} className={cn(loading && "animate-spin")} />
-            {loading ? "Syncing..." : "Reload"}
+            <span className="hidden sm:inline">
+              {loading ? "Syncing..." : "Reload"}
+            </span>
           </button>
         </div>
       </div>
