@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -82,90 +82,78 @@ export function DragDropBuilder({
     useSensor(KeyboardSensor),
   );
 
-  const handleDragStart = useCallback((event: DragStartEvent) => {
+  function handleDragStart(event: DragStartEvent) {
     const data = event.active.data.current as DragData | undefined;
     if (data) {
       setActiveData(data);
       setActiveDragType(data.type);
     }
-  }, []);
+  }
 
-  const handleDragEnd = useCallback(
-    (event: DragEndEvent) => {
-      const { active, over } = event;
-      setActiveData(null);
-      setActiveDragType(null);
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    setActiveData(null);
+    setActiveDragType(null);
 
-      if (!over) return;
+    if (!over) return;
 
-      const dragData = active.data.current as DragData | undefined;
-      if (!dragData) return;
+    const dragData = active.data.current as DragData | undefined;
+    if (!dragData) return;
 
-      const overData = over.data.current as { type?: DragItemType } | undefined;
+    const overData = over.data.current as { type?: DragItemType } | undefined;
 
-      // Handle drop from palette to canvas
-      if (String(active.id).startsWith("palette-")) {
-        // overData.type exists when dropping directly on a DropZone.
-        // When dropping on a SortableItem inside a zone, type is undefined —
-        // infer the zone type by checking which selected array contains the over.id.
-        let dropType = overData?.type;
-        if (!dropType) {
-          const overId = String(over.id);
-          if (selectedSkills.includes(overId)) dropType = "skill";
-          else if (selectedLayers.includes(overId)) dropType = "layer";
-        }
-        if (!dropType || dropType !== dragData.type) return;
-
-        switch (dragData.type) {
-          case "profile":
-            onSetProfile(dragData.id);
-            break;
-          case "skill":
-            onAddSkill(dragData.id);
-            break;
-          case "layer":
-            onAddLayer(dragData.id);
-            break;
-          case "provider":
-            onSetProvider(dragData.id);
-            break;
-        }
-        return;
+    // Handle drop from palette to canvas
+    if (String(active.id).startsWith("palette-")) {
+      // overData.type exists when dropping directly on a DropZone.
+      // When dropping on a SortableItem inside a zone, type is undefined —
+      // infer the zone type by checking which selected array contains the over.id.
+      let dropType = overData?.type;
+      if (!dropType) {
+        const overId = String(over.id);
+        if (selectedSkills.includes(overId)) dropType = "skill";
+        else if (selectedLayers.includes(overId)) dropType = "layer";
       }
+      if (!dropType || dropType !== dragData.type) return;
 
-      // Handle reorder within sortable zones
-      if (active.id !== over.id) {
-        const activeId = String(active.id);
-        const targetId = String(over.id);
-
-        if (
-          selectedSkills.includes(activeId) &&
-          selectedSkills.includes(targetId)
-        ) {
-          const oldIndex = selectedSkills.indexOf(activeId);
-          const newIndex = selectedSkills.indexOf(targetId);
-          onReorderSkills(oldIndex, newIndex);
-        } else if (
-          selectedLayers.includes(activeId) &&
-          selectedLayers.includes(targetId)
-        ) {
-          const oldIndex = selectedLayers.indexOf(activeId);
-          const newIndex = selectedLayers.indexOf(targetId);
-          onReorderLayers(oldIndex, newIndex);
-        }
+      switch (dragData.type) {
+        case "profile":
+          onSetProfile(dragData.id);
+          break;
+        case "skill":
+          onAddSkill(dragData.id);
+          break;
+        case "layer":
+          onAddLayer(dragData.id);
+          break;
+        case "provider":
+          onSetProvider(dragData.id);
+          break;
       }
-    },
-    [
-      selectedSkills,
-      selectedLayers,
-      onSetProfile,
-      onAddSkill,
-      onAddLayer,
-      onSetProvider,
-      onReorderSkills,
-      onReorderLayers,
-    ],
-  );
+      return;
+    }
+
+    // Handle reorder within sortable zones
+    if (active.id !== over.id) {
+      const activeId = String(active.id);
+      const targetId = String(over.id);
+
+      if (
+        selectedSkills.includes(activeId) &&
+        selectedSkills.includes(targetId)
+      ) {
+        const oldIndex = selectedSkills.indexOf(activeId);
+        const newIndex = selectedSkills.indexOf(targetId);
+        onReorderSkills(oldIndex, newIndex);
+      } else if (
+        selectedLayers.includes(activeId) &&
+        selectedLayers.includes(targetId)
+      ) {
+        const oldIndex = selectedLayers.indexOf(activeId);
+        const newIndex = selectedLayers.indexOf(targetId);
+        onReorderLayers(oldIndex, newIndex);
+      }
+    }
+  }
 
   return (
     <DndContext

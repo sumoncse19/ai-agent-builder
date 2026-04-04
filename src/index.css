@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
-/* ─── Obsidian Forge Theme ─── */
+/* ─── Theme Token System ─── */
 
 @theme {
-  /* Surface palette – deep obsidian with warm undertones */
+  /* ── Static palette (same in both themes) ── */
   --color-forge-950: #08090d;
   --color-forge-900: #0f1117;
   --color-forge-850: #14161e;
@@ -17,14 +17,13 @@
   --color-forge-100: #e4e5ed;
   --color-forge-50: #f4f4f8;
 
-  /* Accent – warm amber/gold (the forge fire) */
   --color-ember-500: #f59e0b;
   --color-ember-400: #fbbf24;
   --color-ember-300: #fcd34d;
   --color-ember-200: #fde68a;
   --color-ember-600: #d97706;
 
-  /* Semantic colors */
+  /* Semantic skill/layer colors */
   --color-info: #60a5fa;
   --color-action: #34d399;
   --color-reasoning: #c084fc;
@@ -32,21 +31,89 @@
   --color-context: #2dd4bf;
   --color-formatting: #94a3b8;
 
+  /* ── Semantic surface tokens (theme-aware) ── */
+  --color-surface-base: var(--_surface-base);
+  --color-surface-primary: var(--_surface-primary);
+  --color-surface-secondary: var(--_surface-secondary);
+  --color-surface-elevated: var(--_surface-elevated);
+  --color-surface-overlay: var(--_surface-overlay);
+
+  /* ── Semantic text tokens ── */
+  --color-text-primary: var(--_text-primary);
+  --color-text-secondary: var(--_text-secondary);
+  --color-text-muted: var(--_text-muted);
+  --color-text-heading: var(--_text-heading);
+  --color-text-inverse: var(--_text-inverse);
+
+  /* ── Semantic border tokens ── */
+  --color-border-default: var(--_border-default);
+  --color-border-subtle: var(--_border-subtle);
+  --color-border-strong: var(--_border-strong);
+
   /* Font families */
   --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
-/* ─── Base ─── */
+/* ─── Dark Theme (default) ─── */
 
-html {
+:root,
+[data-theme="dark"] {
   color-scheme: dark;
+
+  --_surface-base: var(--color-forge-950);
+  --_surface-primary: var(--color-forge-800);
+  --_surface-secondary: var(--color-forge-850);
+  --_surface-elevated: var(--color-forge-700);
+  --_surface-overlay: color-mix(in srgb, var(--color-forge-900) 80%, transparent);
+
+  --_text-primary: var(--color-forge-100);
+  --_text-secondary: var(--color-forge-300);
+  --_text-muted: var(--color-forge-500);
+  --_text-heading: var(--color-forge-50);
+  --_text-inverse: var(--color-forge-950);
+
+  --_border-default: color-mix(in srgb, var(--color-forge-700) 60%, transparent);
+  --_border-subtle: color-mix(in srgb, var(--color-forge-700) 30%, transparent);
+  --_border-strong: var(--color-forge-600);
 }
+
+/* ─── Light Theme ─── */
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  --_surface-base: #f5f6fa;
+  --_surface-primary: #ffffff;
+  --_surface-secondary: #f0f1f7;
+  --_surface-elevated: #e8eaf2;
+  --_surface-overlay: color-mix(in srgb, #ffffff 85%, transparent);
+
+  --_text-primary: #1e2035;
+  --_text-secondary: #5a5f7d;
+  --_text-muted: #8b90ad;
+  --_text-heading: #0f1022;
+  --_text-inverse: #f4f4f8;
+
+  --_border-default: #dfe1ec;
+  --_border-subtle: #eceef5;
+  --_border-strong: #c8cbdb;
+
+  /* Adjust semantic colors for light backgrounds */
+  --color-info: #3b82f6;
+  --color-action: #16a34a;
+  --color-reasoning: #9333ea;
+  --color-personality: #ea580c;
+  --color-context: #0d9488;
+  --color-formatting: #64748b;
+}
+
+/* ─── Base ─── */
 
 body {
   font-family: var(--font-sans);
-  background: var(--color-forge-950);
-  color: var(--color-forge-100);
+  background: var(--color-surface-base);
+  color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -62,17 +129,16 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-forge-600);
+  background: var(--color-border-strong);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-forge-500);
+  background: var(--color-text-muted);
 }
 
 /* ─── Custom Utilities ─── */
 
-/* Noise texture overlay for depth */
 .noise-bg::before {
   content: "";
   position: fixed;
@@ -85,36 +151,49 @@ body {
   background-size: 256px 256px;
 }
 
-/* Dot grid pattern for canvas */
+[data-theme="light"] .noise-bg::before {
+  opacity: 0.015;
+}
+
 .dot-grid {
   background-image: radial-gradient(
     circle,
-    var(--color-forge-600) 1px,
+    var(--color-border-default) 1px,
     transparent 1px
   );
   background-size: 24px 24px;
 }
 
-/* Glass morphism card */
 .glass-card {
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--color-forge-800) 80%, transparent),
-    color-mix(in srgb, var(--color-forge-850) 90%, transparent)
-  );
+  background: var(--color-surface-overlay);
   backdrop-filter: blur(12px);
-  border: 1px solid var(--color-forge-700);
+  border: 1px solid var(--color-border-default);
 }
 
-/* Glow ring effect */
+[data-theme="light"] .glass-card {
+  background: var(--color-surface-primary);
+  backdrop-filter: none;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+}
+
 .glow-ember {
   box-shadow:
     0 0 0 1px var(--color-ember-500),
     0 0 20px -4px color-mix(in srgb, var(--color-ember-500) 30%, transparent);
 }
 
+[data-theme="light"] .glow-ember {
+  box-shadow:
+    0 0 0 2px var(--color-ember-500),
+    0 0 12px -2px color-mix(in srgb, var(--color-ember-500) 20%, transparent);
+}
+
 .glow-subtle {
   box-shadow: 0 0 20px -4px color-mix(in srgb, var(--color-ember-500) 15%, transparent);
+}
+
+[data-theme="light"] .glow-subtle {
+  box-shadow: 0 4px 12px -2px rgb(0 0 0 / 0.08), 0 0 0 1px color-mix(in srgb, var(--color-ember-500) 30%, transparent);
 }
 
 /* ─── Animations ─── */
@@ -131,17 +210,12 @@ body {
 }
 
 @keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
 @keyframes pulse-glow {
-  0%,
-  100% {
+  0%, 100% {
     box-shadow:
       0 0 0 1px color-mix(in srgb, var(--color-ember-500) 40%, transparent),
       0 0 12px -2px color-mix(in srgb, var(--color-ember-500) 20%, transparent);
@@ -154,40 +228,17 @@ body {
 }
 
 @keyframes border-flow {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-.animate-fade-up {
-  animation: fade-up 0.4s ease-out both;
-}
+.animate-fade-up { animation: fade-up 0.4s ease-out both; }
+.animate-shimmer { background-size: 200% 100%; animation: shimmer 2s linear infinite; }
+.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+.animate-border-flow { background-size: 300% 300%; animation: border-flow 4s ease infinite; }
 
-.animate-shimmer {
-  background-size: 200% 100%;
-  animation: shimmer 2s linear infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
-.animate-border-flow {
-  background-size: 300% 300%;
-  animation: border-flow 4s ease infinite;
-}
-
-/* Stagger children */
-.stagger-children > * {
-  animation: fade-up 0.3s ease-out both;
-}
-
+.stagger-children > * { animation: fade-up 0.3s ease-out both; }
 .stagger-children > *:nth-child(1) { animation-delay: 0ms; }
 .stagger-children > *:nth-child(2) { animation-delay: 50ms; }
 .stagger-children > *:nth-child(3) { animation-delay: 100ms; }
@@ -201,20 +252,33 @@ body {
 .stagger-children > *:nth-child(11) { animation-delay: 500ms; }
 .stagger-children > *:nth-child(12) { animation-delay: 550ms; }
 
-/* Selection */
 ::selection {
   background: color-mix(in srgb, var(--color-ember-500) 30%, transparent);
-  color: var(--color-forge-50);
+  color: var(--color-text-heading);
 }
 
-/* Focus ring override */
 *:focus-visible {
   outline: 2px solid var(--color-ember-500);
   outline-offset: 2px;
 }
 
-/* Dialog backdrop */
 dialog::backdrop {
   background: color-mix(in srgb, var(--color-forge-950) 80%, transparent);
   backdrop-filter: blur(8px);
+}
+
+/* ─── Theme transition ─── */
+*,
+*::before,
+*::after {
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+}
+
+/* Exclude elements where transition causes issues */
+[draggable],
+[data-dnd-kit],
+.animate-spin {
+  transition-property: none;
 }

@@ -46,11 +46,11 @@ export function DraggableItem({
         !isPlaced && "cursor-pointer lg:cursor-grab",
         isDragging && "z-50 opacity-40",
         isPlaced
-          ? "border-forge-700/30 bg-forge-800/30 opacity-40"
-          : "border-forge-700/50 bg-forge-800/60 hover:border-ember-500/40 hover:bg-forge-700/50",
+          ? "border-border-subtle bg-surface-secondary/30 opacity-40"
+          : "border-border-default bg-surface-primary/60 hover:border-ember-500/40 hover:bg-surface-elevated/50",
       )}
     >
-      <div className="mt-0.5 shrink-0 text-forge-600 group-hover:text-forge-400">
+      <div className="mt-0.5 shrink-0 text-text-muted group-hover:text-text-secondary">
         {isPlaced ? (
           <Check size={12} className="text-action" />
         ) : (
@@ -59,13 +59,13 @@ export function DraggableItem({
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-medium text-forge-100 truncate">
+          <span className="text-xs font-medium text-text-primary truncate">
             {name}
           </span>
           {badge && <Badge label={badge.label} variant={badge.variant} />}
         </div>
         {description && (
-          <p className="mt-0.5 text-[11px] leading-relaxed text-forge-400 line-clamp-2">
+          <p className="mt-0.5 text-[11px] leading-relaxed text-text-muted line-clamp-2">
             {description}
           </p>
         )}

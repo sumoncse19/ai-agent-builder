@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { RefreshCw, Clock, Flame } from "lucide-react";
+import { RefreshCw, Clock, Flame, Sun, Moon } from "lucide-react";
 import { cn } from "../../utils/cn";
 
 function SessionTimer() {
@@ -16,7 +16,7 @@ function SessionTimer() {
   const seconds = sessionTime % 60;
 
   return (
-    <div className="flex items-center gap-1.5 font-mono text-xs text-forge-400">
+    <div className="flex items-center gap-1.5 font-mono text-xs text-text-muted">
       <Clock size={12} />
       <span>
         {minutes}:{seconds.toString().padStart(2, "0")}
@@ -28,36 +28,49 @@ function SessionTimer() {
 interface HeaderProps {
   loading: boolean;
   onRefetch: () => void;
+  theme: "light" | "dark";
+  onToggleTheme: () => void;
 }
 
-export function Header({ loading, onRefetch }: HeaderProps) {
+export function Header({
+  loading,
+  onRefetch,
+  theme,
+  onToggleTheme,
+}: HeaderProps) {
   return (
-    <header className="relative border-b border-forge-700/50 bg-forge-900/80 backdrop-blur-xl">
-      {/* Animated gradient accent line */}
-      <div className="absolute inset-x-0 bottom-0 h-px animate-border-flow bg-gradient-to-r from-transparent via-ember-500/60 to-transparent" />
+    <header className="relative border-b border-border-default bg-surface-overlay backdrop-blur-xl">
+      <div className="absolute inset-x-0 bottom-0 h-px animate-border-flow bg-linear-to-r from-transparent via-ember-500/60 to-transparent" />
 
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6 md:py-4">
         <div className="flex items-center gap-3">
-          <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-ember-500 to-ember-600 text-forge-950 shadow-lg shadow-ember-500/20">
+          <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-ember-500 to-ember-600 text-text-inverse shadow-lg shadow-ember-500/20">
             <Flame size={20} strokeWidth={2.5} />
-            <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-ember-400/20 to-transparent" />
+            <div className="absolute inset-0 rounded-xl bg-linear-to-br from-ember-400/20 to-transparent" />
           </div>
           <div>
-            <h1 className="text-lg font-bold tracking-tight text-forge-50 md:text-xl">
+            <h1 className="text-lg font-bold tracking-tight text-text-heading md:text-xl">
               Agent Forge
             </h1>
-            <p className="hidden text-xs font-medium text-forge-400 sm:block">
+            <p className="hidden text-xs font-medium text-text-muted sm:block">
               Craft your custom AI agent
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <SessionTimer />
+          <button
+            onClick={onToggleTheme}
+            className="flex items-center justify-center rounded-lg border border-border-default bg-surface-primary p-1.5 text-text-secondary transition-all hover:border-border-strong hover:bg-surface-elevated hover:text-text-primary"
+            aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+          >
+            {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
+          </button>
           <button
             onClick={onRefetch}
             disabled={loading}
             className={cn(
-              "flex items-center gap-2 rounded-lg border border-forge-600 bg-forge-800 px-3 py-1.5 font-mono text-xs font-medium text-forge-200 transition-all hover:border-forge-500 hover:bg-forge-700 hover:text-forge-100",
+              "flex items-center gap-2 rounded-lg border border-border-default bg-surface-primary px-3 py-1.5 font-mono text-xs font-medium text-text-secondary transition-all hover:border-border-strong hover:bg-surface-elevated hover:text-text-primary",
               loading && "cursor-not-allowed opacity-40",
             )}
           >

@@ -1,32 +1,49 @@
 import { Toaster } from "sonner";
 import { useAgentData } from "./hooks/useAgentData";
 import { useAgentBuilder } from "./hooks/useAgentBuilder";
+import { useTheme } from "./hooks/useTheme";
 import { Header } from "./components/layout/Header";
 import { Layout } from "./components/layout/Layout";
 import { DragDropBuilder } from "./components/builder/DragDropBuilder";
 import { SavedAgentsList } from "./components/agent/SavedAgentsList";
 
+const toastStyleDark = {
+  background: "var(--color-forge-800)",
+  border: "1px solid var(--color-forge-600)",
+  color: "var(--color-forge-100)",
+} as const;
+
+const toastStyleLight = {
+  background: "#ffffff",
+  border: "1px solid #dfe1ec",
+  color: "#1e2035",
+} as const;
+
 function App() {
   const { data, loading, error, refetch, profileMap, skillMap, layerMap } =
     useAgentData();
   const builder = useAgentBuilder();
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <>
       <Toaster
         position="top-right"
         richColors
-        theme="dark"
+        theme={theme}
         toastOptions={{
-          style: {
-            background: "var(--color-forge-800)",
-            border: "1px solid var(--color-forge-600)",
-            color: "var(--color-forge-100)",
-          },
+          style: theme === "dark" ? toastStyleDark : toastStyleLight,
         }}
       />
       <Layout
-        header={<Header loading={loading} onRefetch={refetch} />}
+        header={
+          <Header
+            loading={loading}
+            onRefetch={refetch}
+            theme={theme}
+            onToggleTheme={toggleTheme}
+          />
+        }
         footer={
           <SavedAgentsList
             agents={builder.savedAgents}
@@ -46,8 +63,8 @@ function App() {
         {loading && (
           <div className="flex items-center justify-center py-20">
             <div className="flex flex-col items-center gap-3">
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-forge-700 border-t-ember-500" />
-              <p className="font-mono text-xs text-forge-400">
+              <div className="h-8 w-8 animate-spin rounded-full border-4 border-border-default border-t-ember-500" />
+              <p className="font-mono text-xs text-text-muted">
                 Loading configuration data...
               </p>
             </div>
@@ -55,7 +72,7 @@ function App() {
         )}
 
         {!data && !loading && !error && (
-          <div className="flex items-center justify-center py-20 text-forge-500">
+          <div className="flex items-center justify-center py-20 text-text-muted">
             <p className="text-sm">
               No data loaded. Click "Reload" to try again.
             </p>

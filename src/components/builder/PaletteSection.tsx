@@ -19,29 +19,30 @@ export function PaletteSection({
   onToggle,
 }: PaletteSectionProps) {
   return (
-    <div className="border-b border-forge-700/30 last:border-b-0">
+    <div className="border-b border-border-subtle last:border-b-0">
       <button
         onClick={onToggle}
+        aria-expanded={isOpen}
         className={cn(
-          "flex w-full items-center justify-between px-4 py-2.5 text-left transition-colors hover:bg-forge-800/50",
-          isOpen && "bg-forge-800/30",
+          "flex w-full items-center justify-between px-4 py-2.5 text-left transition-colors hover:bg-surface-elevated/50",
+          isOpen && "bg-surface-elevated/30",
         )}
       >
         <div className="flex items-center gap-2">
-          <span className={cn("text-forge-500", isOpen && "text-ember-500")}>
+          <span className={cn("text-text-muted", isOpen && "text-ember-500")}>
             {icon}
           </span>
-          <span className="text-xs font-semibold uppercase tracking-wider text-forge-300">
+          <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
             {title}
           </span>
-          <span className="inline-flex items-center rounded-md bg-forge-700/60 px-1.5 py-0.5 font-mono text-[10px] font-medium text-forge-400">
+          <span className="inline-flex items-center rounded-md bg-surface-elevated/60 px-1.5 py-0.5 font-mono text-[10px] font-medium text-text-muted">
             {count}
           </span>
         </div>
         <ChevronDown
           size={14}
           className={cn(
-            "text-forge-500 transition-transform duration-200",
+            "text-text-muted transition-transform duration-200",
             isOpen && "rotate-180 text-ember-500",
           )}
         />

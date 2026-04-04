@@ -31,10 +31,11 @@ export function SaveAgentForm({
         <input
           type="text"
           placeholder="Enter agent name..."
+          aria-label="Agent name"
           value={agentName}
           onChange={(e) => onNameChange(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && !isDisabled && onSave()}
-          className="flex-1 rounded-lg border border-forge-600 bg-forge-850 px-3 py-2 text-sm text-forge-100 placeholder-forge-500 transition-all focus:border-ember-500/50 focus:bg-forge-800 focus:outline-none focus:ring-1 focus:ring-ember-500/30"
+          className="flex-1 rounded-lg border border-border-strong bg-surface-secondary px-3 py-2 text-sm text-text-primary placeholder-text-muted transition-all focus:border-ember-500/50 focus:bg-surface-primary focus:outline-none focus:ring-1 focus:ring-ember-500/30"
         />
         <button
           onClick={onSave}
@@ -42,12 +43,12 @@ export function SaveAgentForm({
           className={cn(
             "flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-semibold transition-all",
             isDisabled
-              ? "cursor-not-allowed bg-forge-700 text-forge-500 opacity-40"
+              ? "cursor-not-allowed bg-surface-elevated text-text-muted opacity-40"
               : "active:scale-[0.97]",
             !isDisabled &&
               (isEditing
-                ? "bg-personality text-forge-950 hover:brightness-110"
-                : "bg-gradient-to-r from-ember-500 to-ember-600 text-forge-950 shadow-lg shadow-ember-500/20 hover:shadow-ember-500/30"),
+                ? "bg-personality text-text-inverse hover:brightness-110"
+                : "bg-linear-to-r from-ember-500 to-ember-600 text-text-inverse shadow-lg shadow-ember-500/20 hover:shadow-ember-500/30"),
           )}
         >
           {isEditing ? <Pencil size={14} /> : <Save size={14} />}
@@ -55,7 +56,7 @@ export function SaveAgentForm({
         </button>
         <button
           onClick={onReset}
-          className="flex items-center gap-1.5 rounded-lg border border-forge-600 bg-forge-800 px-3 py-2 text-sm font-medium text-forge-300 transition-all hover:border-forge-500 hover:bg-forge-700 hover:text-forge-100"
+          className="flex items-center gap-1.5 rounded-lg border border-border-default bg-surface-primary px-3 py-2 text-sm font-medium text-text-secondary transition-all hover:border-border-strong hover:bg-surface-elevated hover:text-text-primary"
           title="Reset builder"
         >
           <RotateCcw size={14} />

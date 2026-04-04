@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import type { AgentData, AgentProfile, Skill, Layer } from "../types/agent";
 
 export function useAgentData() {
@@ -7,7 +7,7 @@ export function useAgentData() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchData = useCallback(async () => {
+  async function fetchData() {
     setLoading(true);
     setError(null);
     try {
@@ -25,14 +25,15 @@ export function useAgentData() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }
 
   // Bug 2 fix: fetch exactly once on mount — no re-fetching on selection changes
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, []);
 
-  // js-index-maps: build Map<id, item> for O(1) lookups instead of .find() O(n)
+  // O(1) Map lookups instead of O(n) .find() — useMemo justified here since
+  // Maps are expensive to reconstruct and data only changes on refetch
   const profileMap = useMemo(
     () =>
       new Map<string, AgentProfile>(

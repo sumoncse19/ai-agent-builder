@@ -65,13 +65,13 @@ export function DropZone(props: DropZoneProps) {
           ? "glow-ember border-ember-500 bg-ember-500/5"
           : isValidTarget && activeDragType
             ? "animate-pulse-glow border-dashed border-ember-500/40 bg-ember-500/5"
-            : "border-forge-700/40 bg-forge-850/60",
+            : "border-border-default bg-surface-secondary/60",
       )}
     >
       <div className="mb-3 flex items-center gap-2">
         <span
           className={cn(
-            "text-forge-500",
+            "text-text-muted",
             isValidTarget && "text-ember-500",
           )}
         >
@@ -79,7 +79,7 @@ export function DropZone(props: DropZoneProps) {
         </span>
         <h3
           className={cn(
-            "text-xs font-semibold uppercase tracking-wider text-forge-400",
+            "text-xs font-semibold uppercase tracking-wider text-text-muted",
             isValidTarget && "text-ember-400",
           )}
         >
@@ -118,17 +118,18 @@ function SingleContent({
     return (
       <EmptyState
         message={`Drag a ${type} here`}
-        className="min-h-12 border-forge-700/30"
+        className="min-h-12 border-border-subtle"
       />
     );
   }
 
   return (
-    <div className="flex items-center justify-between rounded-lg border border-forge-600/50 bg-forge-800 px-4 py-2.5">
-      <span className="text-sm font-medium text-forge-100">{item.name}</span>
+    <div className="flex items-center justify-between rounded-lg border border-border-default bg-surface-primary px-4 py-2.5">
+      <span className="text-sm font-medium text-text-primary">{item.name}</span>
       <button
         onClick={onRemove}
-        className="rounded p-1 text-forge-500 transition-colors hover:bg-red-500/10 hover:text-red-400"
+        aria-label={`Remove ${item.name}`}
+        className="rounded p-1 text-text-muted transition-colors hover:bg-red-500/10 hover:text-red-400"
       >
         <svg
           width="12"
@@ -163,7 +164,7 @@ function MultiContent({
     return (
       <EmptyState
         message="Drag items here"
-        className="min-h-12 border-forge-700/30"
+        className="min-h-12 border-border-subtle"
       />
     );
   }

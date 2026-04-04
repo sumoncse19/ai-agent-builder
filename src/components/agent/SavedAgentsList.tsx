@@ -23,7 +23,7 @@ export function SavedAgentsList({
 
   if (agents.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-forge-700/40 p-8 text-forge-500">
+      <div className="flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border-default p-8 text-text-muted">
         <Archive size={28} />
         <p className="text-xs font-medium">
           No saved agents yet. Build your first agent above!
@@ -36,9 +36,9 @@ export function SavedAgentsList({
     <>
       <section className="glass-card rounded-xl p-5">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-forge-200">
+          <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-text-secondary">
             Saved Agents
-            <span className="inline-flex items-center rounded-md bg-ember-500/15 px-2 py-0.5 font-mono text-[10px] font-semibold text-ember-400">
+            <span className="inline-flex items-center rounded-md bg-ember-500/15 px-2 py-0.5 font-mono text-[10px] font-semibold text-ember-500">
               {agents.length}
             </span>
           </h2>

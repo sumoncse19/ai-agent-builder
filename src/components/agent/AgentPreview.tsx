@@ -35,10 +35,10 @@ export function AgentPreview({
           <div className="flex items-start gap-2">
             <User size={14} className="mt-0.5 shrink-0 text-reasoning" />
             <div>
-              <p className="font-mono text-[10px] font-medium text-forge-500">
+              <p className="font-mono text-[10px] font-medium text-text-muted">
                 Profile
               </p>
-              <p className="text-sm font-semibold text-forge-100">
+              <p className="text-sm font-semibold text-text-primary">
                 {profile.name}
               </p>
             </div>
@@ -48,10 +48,10 @@ export function AgentPreview({
           <div className="flex items-start gap-2">
             <Zap size={14} className="mt-0.5 shrink-0 text-ember-500" />
             <div>
-              <p className="font-mono text-[10px] font-medium text-forge-500">
+              <p className="font-mono text-[10px] font-medium text-text-muted">
                 Skills
               </p>
-              <p className="text-sm font-semibold text-forge-100">
+              <p className="text-sm font-semibold text-text-primary">
                 {selectedSkills.length} selected
               </p>
             </div>
@@ -61,10 +61,10 @@ export function AgentPreview({
           <div className="flex items-start gap-2">
             <Layers size={14} className="mt-0.5 shrink-0 text-personality" />
             <div>
-              <p className="font-mono text-[10px] font-medium text-forge-500">
+              <p className="font-mono text-[10px] font-medium text-text-muted">
                 Layers
               </p>
-              <p className="text-sm font-semibold text-forge-100">
+              <p className="text-sm font-semibold text-text-primary">
                 {selectedLayers.length} selected
               </p>
             </div>
@@ -74,10 +74,10 @@ export function AgentPreview({
           <div className="flex items-start gap-2">
             <Cpu size={14} className="mt-0.5 shrink-0 text-action" />
             <div>
-              <p className="font-mono text-[10px] font-medium text-forge-500">
+              <p className="font-mono text-[10px] font-medium text-text-muted">
                 Provider
               </p>
-              <p className="text-sm font-semibold text-forge-100">
+              <p className="text-sm font-semibold text-text-primary">
                 {selectedProvider}
               </p>
             </div>

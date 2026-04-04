@@ -1,17 +1,17 @@
-import { useState, useCallback, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef } from "react";
 import { arrayMove } from "@dnd-kit/sortable";
 import { toast } from "sonner";
 import type { SavedAgent } from "../types/agent";
+import type { AIProvider } from "../utils/constants";
 import { useIndexedDB } from "./useIndexedDB";
 
 export function useAgentBuilder() {
   const [selectedProfile, setSelectedProfile] = useState("");
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [selectedLayers, setSelectedLayers] = useState<string[]>([]);
-  const [selectedProvider, setSelectedProvider] = useState("");
+  const [selectedProvider, setSelectedProvider] = useState<AIProvider | "">("");
   const [agentName, setAgentName] = useState("");
   const [editingAgentId, setEditingAgentId] = useState<string | null>(null);
-  // Track original state when loading an agent, for dirty-checking
   const [originalAgent, setOriginalAgent] = useState<SavedAgent | null>(null);
   const [savedAgents, setSavedAgents] = useIndexedDB<SavedAgent[]>(
     "savedAgents",
@@ -39,7 +39,6 @@ export function useAgentBuilder() {
     return () => clearInterval(interval);
   }, []);
 
-  // Fix #3: can't save without name AND at least one selection
   const hasAnySelection =
     selectedProfile !== "" ||
     selectedSkills.length > 0 ||
@@ -48,66 +47,56 @@ export function useAgentBuilder() {
 
   const canSave = agentName.trim() !== "" && hasAnySelection;
 
-  // Fix #4: detect if anything changed from the loaded agent
-  const hasChanges = useMemo(() => {
-    if (!editingAgentId || !originalAgent) return false;
-    return (
+  // Dirty-checking: detect if anything changed from the loaded agent
+  let hasChanges = false;
+  if (editingAgentId && originalAgent) {
+    hasChanges =
       agentName.trim() !== originalAgent.name ||
       selectedProfile !== originalAgent.profileId ||
       selectedProvider !== originalAgent.provider ||
       selectedSkills.length !== originalAgent.skillIds.length ||
       selectedLayers.length !== originalAgent.layerIds.length ||
       selectedSkills.some((id, i) => originalAgent.skillIds[i] !== id) ||
-      selectedLayers.some((id, i) => originalAgent.layerIds[i] !== id)
-    );
-  }, [
-    editingAgentId,
-    originalAgent,
-    agentName,
-    selectedProfile,
-    selectedProvider,
-    selectedSkills,
-    selectedLayers,
-  ]);
+      selectedLayers.some((id, i) => originalAgent.layerIds[i] !== id);
+  }
 
   // Bug 1 fix: all handlers create new arrays (no .push() mutation)
-  const addSkill = useCallback((skillId: string) => {
+  function addSkill(skillId: string) {
     setSelectedSkills((prev) => {
       if (prev.includes(skillId)) return prev;
       return [...prev, skillId];
     });
-  }, []);
+  }
 
-  const removeSkill = useCallback((skillId: string) => {
+  function removeSkill(skillId: string) {
     setSelectedSkills((prev) => prev.filter((id) => id !== skillId));
-  }, []);
+  }
 
-  const addLayer = useCallback((layerId: string) => {
+  function addLayer(layerId: string) {
     setSelectedLayers((prev) => {
       if (prev.includes(layerId)) return prev;
       return [...prev, layerId];
     });
-  }, []);
+  }
 
-  const removeLayer = useCallback((layerId: string) => {
+  function removeLayer(layerId: string) {
     setSelectedLayers((prev) => prev.filter((id) => id !== layerId));
-  }, []);
+  }
 
-  const reorderSkills = useCallback((oldIndex: number, newIndex: number) => {
+  function reorderSkills(oldIndex: number, newIndex: number) {
     setSelectedSkills((prev) => arrayMove(prev, oldIndex, newIndex));
-  }, []);
+  }
 
-  const reorderLayers = useCallback((oldIndex: number, newIndex: number) => {
+  function reorderLayers(oldIndex: number, newIndex: number) {
     setSelectedLayers((prev) => arrayMove(prev, oldIndex, newIndex));
-  }, []);
+  }
 
-  const saveAgent = useCallback(() => {
+  function saveAgent() {
     if (!agentName.trim()) {
       toast.error("Please enter a name for your agent.");
       return;
     }
 
-    // When editing, allow the same name for the agent being edited
     const nameExists = savedAgents.some(
       (a) =>
         a.name.toLowerCase() === agentName.trim().toLowerCase() &&
@@ -119,7 +108,6 @@ export function useAgentBuilder() {
     }
 
     if (editingAgentId) {
-      // Update existing agent
       setSavedAgents((prev) =>
         prev.map((a) =>
           a.id === editingAgentId
@@ -129,7 +117,7 @@ export function useAgentBuilder() {
                 profileId: selectedProfile,
                 skillIds: selectedSkills,
                 layerIds: selectedLayers,
-                provider: selectedProvider,
+                provider: selectedProvider as AIProvider,
               }
             : a,
         ),
@@ -139,67 +127,50 @@ export function useAgentBuilder() {
       setAgentName("");
       toast.success(`Agent "${agentName.trim()}" updated!`);
     } else {
-      // Create new agent
       const newAgent: SavedAgent = {
         id: crypto.randomUUID(),
         name: agentName.trim(),
         profileId: selectedProfile,
         skillIds: selectedSkills,
         layerIds: selectedLayers,
-        provider: selectedProvider,
+        provider: selectedProvider as AIProvider,
       };
       setSavedAgents((prev) => [...prev, newAgent]);
       setAgentName("");
       toast.success(`Agent "${newAgent.name}" saved!`);
     }
-  }, [
-    agentName,
-    editingAgentId,
-    savedAgents,
-    selectedProfile,
-    selectedSkills,
-    selectedLayers,
-    selectedProvider,
-    setSavedAgents,
-  ]);
+  }
 
-  const loadAgent = useCallback((agent: SavedAgent) => {
+  function loadAgent(agent: SavedAgent) {
     setSelectedProfile(agent.profileId || "");
     setSelectedSkills([...(agent.skillIds || [])]);
     setSelectedLayers([...(agent.layerIds || [])]);
     setSelectedProvider(agent.provider || "");
     setAgentName(agent.name);
     setEditingAgentId(agent.id);
-    // Store original snapshot for dirty-checking
     setOriginalAgent({ ...agent });
-    // Fix #5: say "Loaded" not "Editing"
     toast.info(`Loaded agent "${agent.name}"`);
-  }, []);
+  }
 
-  const deleteAgent = useCallback(
-    (index: number) => {
-      setSavedAgents((prev) => {
-        const agent = prev[index];
-        if (agent?.id === editingAgentId) {
-          setEditingAgentId(null);
-          setOriginalAgent(null);
-        }
-        const updated = prev.filter((_, i) => i !== index);
-        toast.success(`Deleted agent "${agent?.name}"`);
-        return updated;
-      });
-    },
-    [setSavedAgents, editingAgentId],
-  );
+  // Fixed: side effects moved outside the state updater
+  function deleteAgent(index: number) {
+    const agent = savedAgents[index];
+    if (agent?.id === editingAgentId) {
+      setEditingAgentId(null);
+      setOriginalAgent(null);
+    }
+    setSavedAgents((prev) => prev.filter((_, i) => i !== index));
+    if (agent) toast.success(`Deleted agent "${agent.name}"`);
+  }
 
-  const clearAllAgents = useCallback(() => {
+  function clearAllAgents() {
     setSavedAgents([]);
     setEditingAgentId(null);
     setOriginalAgent(null);
     toast.success("All saved agents cleared");
-  }, [setSavedAgents]);
+  }
 
-  const resetBuilder = useCallback(() => {
+  function resetBuilder() {
     setSelectedProfile("");
     setSelectedSkills([]);
     setSelectedLayers([]);
@@ -207,7 +178,7 @@ export function useAgentBuilder() {
     setAgentName("");
     setEditingAgentId(null);
     setOriginalAgent(null);
-  }, []);
+  }
 
   return {
     selectedProfile,
@@ -215,7 +186,8 @@ export function useAgentBuilder() {
     selectedSkills,
     selectedLayers,
     selectedProvider,
-    setSelectedProvider,
+    setSelectedProvider: (id: string) =>
+      setSelectedProvider(id as AIProvider | ""),
     agentName,
     setAgentName,
     editingAgentId,

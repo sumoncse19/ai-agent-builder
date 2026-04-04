@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef } from "react";
+import { useState, useRef } from "react";
 import { User, Zap, Layers, Cpu, Search } from "lucide-react";
 import type { AgentData } from "../../types/agent";
 import { AI_PROVIDERS } from "../../utils/constants";
@@ -52,41 +52,28 @@ export function PalettePanel({
     });
   };
 
-  const filteredProfiles = useMemo(
-    () =>
-      data.agentProfiles.filter(
-        (p) =>
-          p.name.toLowerCase().includes(query) ||
-          p.description.toLowerCase().includes(query),
-      ),
-    [data.agentProfiles, query],
+  const filteredProfiles = data.agentProfiles.filter(
+    (p) =>
+      p.name.toLowerCase().includes(query) ||
+      p.description.toLowerCase().includes(query),
   );
 
-  const filteredSkills = useMemo(
-    () =>
-      data.skills.filter(
-        (s) =>
-          s.name.toLowerCase().includes(query) ||
-          s.category.toLowerCase().includes(query) ||
-          s.description.toLowerCase().includes(query),
-      ),
-    [data.skills, query],
+  const filteredSkills = data.skills.filter(
+    (s) =>
+      s.name.toLowerCase().includes(query) ||
+      s.category.toLowerCase().includes(query) ||
+      s.description.toLowerCase().includes(query),
   );
 
-  const filteredLayers = useMemo(
-    () =>
-      data.layers.filter(
-        (l) =>
-          l.name.toLowerCase().includes(query) ||
-          l.type.toLowerCase().includes(query) ||
-          l.description.toLowerCase().includes(query),
-      ),
-    [data.layers, query],
+  const filteredLayers = data.layers.filter(
+    (l) =>
+      l.name.toLowerCase().includes(query) ||
+      l.type.toLowerCase().includes(query) ||
+      l.description.toLowerCase().includes(query),
   );
 
-  const filteredProviders = useMemo(
-    () => AI_PROVIDERS.filter((p) => p.toLowerCase().includes(query)),
-    [query],
+  const filteredProviders = AI_PROVIDERS.filter((p) =>
+    p.toLowerCase().includes(query),
   );
 
   const canvasOffset =
@@ -97,24 +84,25 @@ export function PalettePanel({
 
   return (
     <div className="glass-card flex h-full flex-col rounded-xl">
-      <div className="border-b border-forge-700/50 p-4">
-        <h2 className="mb-0.5 text-sm font-bold uppercase tracking-widest text-forge-200">
+      <div className="border-b border-border-subtle p-4">
+        <h2 className="mb-0.5 text-sm font-bold uppercase tracking-widest text-text-secondary">
           Components
         </h2>
-        <p className="mb-3 text-[11px] text-forge-500 lg:hidden">
+        <p className="mb-3 text-[11px] text-text-muted lg:hidden">
           Tap to add, or drag on desktop
         </p>
         <div className="relative">
           <Search
             size={14}
-            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-forge-500"
+            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-text-muted"
           />
           <input
             type="text"
             placeholder="Search components..."
+            aria-label="Search components"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-lg border border-forge-600 bg-forge-850 py-2 pl-9 pr-3 font-mono text-xs text-forge-100 placeholder-forge-500 transition-all focus:border-ember-500/50 focus:bg-forge-800 focus:outline-none focus:ring-1 focus:ring-ember-500/30"
+            className="w-full rounded-lg border border-border-strong bg-surface-secondary py-2 pl-9 pr-3 font-mono text-xs text-text-primary placeholder-text-muted transition-all focus:border-ember-500/50 focus:bg-surface-primary focus:outline-none focus:ring-1 focus:ring-ember-500/30"
           />
         </div>
       </div>

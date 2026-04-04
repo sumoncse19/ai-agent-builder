@@ -10,7 +10,7 @@ export function EmptyState({ icon, message, className }: EmptyStateProps) {
   return (
     <div
       className={cn(
-        "flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-forge-700/40 p-6 text-forge-500",
+        "flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border-default p-6 text-text-muted",
         className,
       )}
     >

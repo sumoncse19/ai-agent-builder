@@ -10,9 +10,9 @@ interface BadgeProps {
 export function Badge({ label, variant = "category", className }: BadgeProps) {
   const colorMap = variant === "category" ? CATEGORY_COLORS : TYPE_COLORS;
   const colors = colorMap[label] || {
-    bg: "bg-forge-700",
-    text: "text-forge-300",
-    border: "border-forge-600",
+    bg: "bg-surface-elevated",
+    text: "text-text-secondary",
+    border: "border-border-default",
   };
 
   return (

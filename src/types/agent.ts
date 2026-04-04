@@ -1,3 +1,9 @@
+import type { AIProvider } from "../utils/constants";
+
+export type SkillCategory = "information" | "action";
+
+export type LayerType = "reasoning" | "personality" | "context" | "formatting";
+
 export interface AgentProfile {
   id: string;
   name: string;
@@ -7,14 +13,14 @@ export interface AgentProfile {
 export interface Skill {
   id: string;
   name: string;
-  category: string;
+  category: SkillCategory;
   description: string;
 }
 
 export interface Layer {
   id: string;
   name: string;
-  type: string;
+  type: LayerType;
   description: string;
 }
 
@@ -30,7 +36,7 @@ export interface SavedAgent {
   profileId: string;
   skillIds: string[];
   layerIds: string[];
-  provider: string;
+  provider: AIProvider;
 }
 
 export type DragItemType = "profile" | "skill" | "layer" | "provider";
@@ -40,6 +46,6 @@ export interface DragData {
   id: string;
   name: string;
   description?: string;
-  category?: string;
-  layerType?: string;
+  category?: SkillCategory;
+  layerType?: LayerType;
 }
