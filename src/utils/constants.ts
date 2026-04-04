@@ -49,11 +49,3 @@ export const TYPE_COLORS: Record<
     border: "border-formatting/25",
   },
 };
-
-export const PROVIDER_COLORS: Record<string, string> = {
-  Gemini: "bg-blue-500",
-  ChatGPT: "bg-emerald-500",
-  Kimi: "bg-purple-500",
-  Claude: "bg-orange-500",
-  DeepSeek: "bg-cyan-500",
-};
